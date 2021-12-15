@@ -1,22 +1,24 @@
 const express = require('express')
+const mongoose = require('mongoose')
+const eh = require('express-handlebars')
 const app = express()
 const port = 3000
-const mongoose = require('mongoose')
 const Schema = mongoose.Schema // Schema 大寫表示你可以用 new Schema() 的方式來建構一個新的 Schema
 const db = mongoose.connection // 取得連線狀態
-
 const todoSchema = new Schema({
   name: {
     type: String,
     required: true
   }
 })
+
 // 匯出這份 schema 命名為 Todo，以後在其他的檔案直接使用 Todo 就可以操作和「待辦事項」有關的資料了！
-module.exports = mongoose.model('Todo', todoSchema) 
+module.exports = mongoose.model('Todo', todoSchema)
 // 設定連線到 mongoose database
 //mongoose.connect 是 Mongoose 提供方法 mongodb://[account]:[pw]@[mongodb location]:[port]/[database name]
-mongoose.connect('mongodb://localhost/todo-list', { useNewUrlParser: true, useUnifiedTopology: true })  
-
+mongoose.connect('mongodb://localhost/todo-list', { useNewUrlParser: true, useUnifiedTopology: true })
+app.engine('hbs', eh.engine({ defaultLayout: 'main', extname: '.hbs' }))
+app.set('view engine', 'hbs')
 
 // 用 on 註冊事件監聽器，監聽 error 事件有沒有發生，語法:「只要有觸發 error 就印出 error 訊息」。
 db.on('error', () => {
@@ -29,7 +31,8 @@ db.once('open', () => {
 })
 
 app.get('/', (req, res) => {
-  res.send('hello')
+  console.log(express)
+  res.render('index')
 })
 
 app.listen(port)
