@@ -6,6 +6,10 @@ const todoSchema = new Schema({
   name: {
     type: String,
     required: true
+  },
+  isDone: {
+    type: Boolean,
+    default: false // 預設完成狀態為 false
   }
 })
 // 匯出這份 schema 命名為 Todo，以後在其他的檔案直接使用 Todo 就可以操作和「待辦事項」有關的資料了！
