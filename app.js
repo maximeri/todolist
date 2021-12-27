@@ -9,6 +9,7 @@ const bodyParser = require('body-parser')
 const eh = require('express-handlebars') 
 const methodOverride = require('method-override')
 const port = 3000
+const mongoose = require('mongoose')
 const Schema = mongoose.Schema // Schema 大寫表示你可以用 new Schema() 的方式來建構一個新的 Schema
 const routes = require('./routes')
 
