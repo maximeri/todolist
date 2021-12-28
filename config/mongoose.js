@@ -1,6 +1,12 @@
 const mongoose = require('mongoose')
 // 設定連線到 mongoose database
-mongoose.connect('mongodb://localhost/todo-list', { useNewUrlParser: true, useUnifiedTopology: true })
+
+// config/mongoose.js
+// 如果在 Heroku 環境則使用 process.env.MONGODB_URI
+// 否則為本地環境，使用 mongodb://localhost/todo-list
+const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost/todo-list'
+mongoose.connect(MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true })
+
 const db = mongoose.connection // 取得連線狀態
 db.on('error', () => {
   console.log('mongodb error!') // 用 on 註冊事件監聽器，監聽 error 事件有沒有發生，語法:「只要有觸發 error 就印出 error 訊息」。
