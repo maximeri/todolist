@@ -1,20 +1,23 @@
-// 1. Creating a new express application
-// 2. Creating a new route
-// 3. Starting an HTTP server on a given port number
-// 4. Handling a request once it comes in
-
 const exp = require('express') // 載入 express 套件
+const session = require('express-session')
 const bodyParser = require('body-parser')
 const eh = require('express-handlebars')
 const methodOverride = require('method-override')
-const PORT = process.env.PORT || 3000
+
 const routes = require('./routes')
-require('./config/mongoose') 
+require('./config/mongoose')
+
 const app = exp()
+const PORT = process.env.PORT || 3000
 
 require('./config/mongoose') // 對 app.js 而言，Mongoose 連線設定只需要「被執行」，不需要接到任何回傳參數繼續利用，所以這裡不需要再設定變數。
 app.engine('hbs', eh.engine({ defaultLayout: 'main', extname: '.hbs' }))
 app.set('view engine', 'hbs')
+app.use(session({
+  secret: 'ThisIsMySecret',
+  resave: false,
+  saveUninitialized: true,
+}))
 app.use(bodyParser.urlencoded({ extended: true })) // 用 app.use 規定每一筆請求都需要透過 body-parser 進行前置處理
 app.use(methodOverride('_method'))
 app.use(routes)
