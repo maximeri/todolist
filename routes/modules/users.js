@@ -1,6 +1,7 @@
 const express = require('express')
 const router = express.Router()
 const User = require('../../models/user')
+const passport = require('passport')
 
 
 // login
@@ -8,9 +9,10 @@ router.get('/login', (req,res)=>{
   res.render('login')
 })
 
-router.post('/login', (req, res) => {
-  res.render('login')
-})
+router.post('/login', passport.authenticate('local', { failureRedirect: '/login'}),
+  function (req, res) {
+    res.redirect('/');
+  });
 
 // register
 router.get('/register',(req,res)=>{
@@ -41,6 +43,11 @@ router.post('/register',(req,res)=>{
   })
   // 如果已經註冊：退回原本畫面
   // 如果還沒註冊：寫入資料庫
+})
+
+router.get('/logout', (req, res) => {
+  req.logout()
+  res.redirect('/users/login')
 })
 
 
