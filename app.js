@@ -1,12 +1,10 @@
 const exp = require('express') // 載入 express 套件
 const session = require('express-session')
-const bodyParser = require('body-parser')
 const eh = require('express-handlebars')
+const bodyParser = require('body-parser')
 const methodOverride = require('method-override')
-
 const routes = require('./routes')
 require('./config/mongoose')
-const usePassport = require('./config/passport')
 const app = exp()
 const PORT = process.env.PORT || 3000
 
