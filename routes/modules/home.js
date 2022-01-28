@@ -4,7 +4,8 @@ const router = express.Router()
 const Todo = require('../../models/todo')
 
 router.get('/', (req, res) => {
-  Todo.find()
+  const userId = req.user._id
+  Todo.find({ userId })
     .lean()
     .sort({ _id: 'asc' }) // 根據 _id 升冪排序，如果要降冪 (descending) 排序，可以寫 'desc'
     .then(todos => res.render('index', { todos }))
