@@ -5,20 +5,31 @@ const bodyParser = require('body-parser')
 const methodOverride = require('method-override')
 const routes = require('./routes')
 require('./config/mongoose')
+const usePassport = require('./config/passport')
 const app = exp()
 const PORT = process.env.PORT || 3000
 
 require('./config/mongoose') // 對 app.js 而言，Mongoose 連線設定只需要「被執行」，不需要接到任何回傳參數繼續利用，所以這裡不需要再設定變數。
 app.engine('hbs', eh.engine({ defaultLayout: 'main', extname: '.hbs' }))
 app.set('view engine', 'hbs')
-app.use(app)
+
 app.use(session({
   secret: 'ThisIsMySecret',
   resave: false,
-  saveUninitialized: true,
+  saveUninitialized: true
 }))
-app.use(bodyParser.urlencoded({ extended: true })) // 用 app.use 規定每一筆請求都需要透過 body-parser 進行前置處理
+
+app.use(bodyParser.urlencoded({ extended: true }))
 app.use(methodOverride('_method'))
+
+usePassport(app)
+
+app.use((req, res, next) => {
+  res.locals.isAuthenticated = req.isAuthenticated()
+  res.locals.user = req.user
+  next()
+})
+
 app.use(routes)
 app.listen(PORT, () => {
   console.log(`App is running on http://localhost:${PORT}`)
