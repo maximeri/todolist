@@ -7,7 +7,7 @@ router.get('/', (req, res) => {
   const userId = req.user._id
   Todo.find({ userId })
     .lean()
-    .sort({ _id: 'asc' }) // 根據 _id 升冪排序，如果要降冪 (descending) 排序，可以寫 'desc'
+    .sort({ _id: 'asc' }) // 根據 _id 升冪排序，如果要降冪'desc'
     .then(todos => res.render('index', { todos }))
     .catch(error => console.error(error))
 })

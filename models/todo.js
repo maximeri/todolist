@@ -1,7 +1,6 @@
 // todo model  define schema (資料庫綱要)
 const mongoose = require('mongoose')
 const Schema = mongoose.Schema // Schema 大寫表示你可以用 new Schema() 的方式來建構一個新的 Schema
-const db = mongoose.connection // 取得連線狀態
 const todoSchema = new Schema({
   name: {
     type: String,
@@ -9,9 +8,9 @@ const todoSchema = new Schema({
   },
   isDone: {
     type: Boolean,
-    default: false // 預設完成狀態為 false
+    default: false
   },
-  userId: {  // 加入關聯設定
+  userId: {
     type: Schema.Types.ObjectId,
     ref: 'User',
     index: true,
